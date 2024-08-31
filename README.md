@@ -31,7 +31,7 @@
 ## Visão Geral
 
 <p align="justify">
-O jogo ainda precisa de muitas melhorias, como em suas responsividade por exemplo!
+O jogo ainda precisa de muitas melhorias, como em suas responsividades e o ponteiro do mouse por exemplo!
 </p>
 
 <p align="right">(<a href="#readme-top">voltar ao topo</a>)</p>
@@ -55,11 +55,17 @@ Siga os passos abaixo para obter uma cópia local do projeto e começar a explor
 
 ### Pré-requisitos
 
-Certifique-se de ter o Node.js e o Expo CLI instalados. Caso não tenha, siga as instruções abaixo:
+Certifique-se de ter o Node.js. Caso não tenha, siga as instruções abaixo:
 
 * Node.js e npm
   ```sh
   https://nodejs.org/
+
+* Instale o XAMPP
+
+* Instale o HEIDSQL
+
+* Inicie o XAMPP e configure o SQL
 
 * Clone o repositório
   ```sh
