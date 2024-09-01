@@ -1,6 +1,6 @@
 let h2FontSize = 24; // Tamanho inicial do h2
 let pFontSize = 16; // Tamanho inicial do p
-let infoFontSize = 14; // Tamanho inicial da fonte para os elementos .info, .info-curiosity, e .info-card
+let infoFontSize = 19; // Tamanho inicial da fonte para os elementos .info, .info-curiosity, e .info-card
 const minInfoFontSize = 10;
 const maxInfoFontSize = 30;
 let fontSize = 14;
@@ -106,21 +106,23 @@ document.getElementById('pointer-more').addEventListener('click', function() {
     if (body.classList.contains('large-pointer')) {
         body.classList.remove('large-pointer');
         button.classList.remove('active');
-        document.getElementById('pointer-more').style.backgroundColor = ""
+        document.getElementById('pointer-more').style.backgroundColor = "";
         removeCustomPointer();
     } else {
         body.classList.add('large-pointer');
         button.classList.add('active');
-        document.getElementById('pointer-more').style.backgroundColor = "blue"
+        document.getElementById('pointer-more').style.backgroundColor = "blue";
         addCustomPointer();
     }
 });
 
 function addCustomPointer() {
+    console.log("Adding custom pointer");
     document.addEventListener('mousemove', moveCustomPointer);
 }
 
 function removeCustomPointer() {
+    console.log("Removing custom pointer");
     document.removeEventListener('mousemove', moveCustomPointer);
     const pointer = document.querySelector('.custom-pointer');
     if (pointer) {
@@ -135,8 +137,8 @@ function moveCustomPointer(e) {
         pointer.classList.add('custom-pointer');
         document.body.appendChild(pointer);
     }
-    pointer.style.left = `${e.clientX + -5}px`; // Ajuste horizontal
-    pointer.style.top = `${e.clientY + 0}px`;  // Ajuste vertical
+    pointer.style.left = `${e.clientX - 5}px`; // Ajuste horizontal
+    pointer.style.top = `${e.clientY}px`;  // Ajuste vertical
 }
 
 // Adicionando o estilo CSS para o ponteiro customizado
@@ -147,7 +149,7 @@ style.textContent = `
         width: 50px;
         left: 200px;
         height: 85px;
-        background-image: url('../imgs/arrow_rl.png');
+        background-image: url('./imgs/pointer.png');
         background-size: cover;
         pointer-events: none;
         z-index: 9999;

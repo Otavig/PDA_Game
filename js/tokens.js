@@ -27,6 +27,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function aoTouchStart(e) {
+        const touch = e.touches[0];
+        aoMouseDown({
+            target: e.target,
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+    }
+
     function aoMouseMove(e) {
         if (estaArrastando && tokenAtual) {
             const dx = e.clientX - inicioX;
@@ -37,15 +46,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function aoTouchMove(e) {
+        const touch = e.touches[0];
+        aoMouseMove({
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+    }
+
     function aoMouseUp() {
+        if (estaArrastando && tokenAtual) {
+            // Adiciona a classe 'fixado' para travar o token na posição
+            tokenAtual.classList.add('fixado');
+        }
         estaArrastando = false;
         tokenAtual = null;
     }
 
+    function aoTouchEnd() {
+        aoMouseUp();
+    }
+
     tokens.forEach(token => {
         token.addEventListener('mousedown', aoMouseDown);
+        token.addEventListener('touchstart', aoTouchStart);
     });
 
     document.addEventListener('mousemove', aoMouseMove);
+    document.addEventListener('touchmove', aoTouchMove);
     document.addEventListener('mouseup', aoMouseUp);
+    document.addEventListener('touchend', aoTouchEnd);
 });

@@ -390,7 +390,72 @@ body {
 }
 
 @media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(13, 50px); /* Diminui o tamanho das colunas */
+        grid-template-rows: repeat(7, 50px);     /* Diminui o tamanho das linhas */
+    }
+
+    .grid-item {
+        width: 50px;
+        height: 50px;
+        padding: 2px; /* Ajusta o padding */
+    }
+
+    .grid-item span {
+        height: 10px;
+    }
+
+    .grid-item .number, .grid-item .info, .info-curiosity, .info-card {
+        font-size: 12px; /* Diminui o tamanho da fonte */
+        padding-left: 3px;
+        padding-right: 3px;
+        padding-bottom: 10px;
+    }
+
+    .token {
+        width: 20px; /* Diminui a largura dos tokens */
+        height: 40px; /* Diminui a altura dos tokens */
+        line-height: 30px; /* Ajusta a linha para centralizar o texto */
+    }
+
+    .hand {
+        width: 40px;
+        height: 40px;
+    }
+
+    .given {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .gone, .gtwo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .deck {
+        width: 300px;
+        margin-top: 200px;
+        margin-left: 50px;
+    }
+
+    .card {
+        width: 100px;
+        height: 50px;
+    }
+
+    .card img {
+        height: 30px;
+        width: 30px;
+    }
+
+    .modal-content {
+        width: 80%;
+        max-width: 300px;
+    }
 }
 
 @media (max-width: 480px) {
+
 }
