@@ -39,100 +39,129 @@ function addEditEventListeners(table) {
             let row = event.target.closest('tr');
             let itemId = row.querySelector('td:first-child').textContent;
 
-            let content = '';
-            if (table === "sorte_ou_azar") {
-                content = `
-                <h1>Sorte ou Azar</h1>
-                <label for="sorte_ou_azar_descricao">Descrição</label>
-                <textarea id="sorte_ou_azar_descricao" maxlength="255" rows="3" cols="50"></textarea>
-                <label for="file_sorte_ou_azar">Imagem</label>
-                <input type="file" id="file_sorte_ou_azar">
-                <button type="submit" id="submit_edit_sorte_ou_azar">Enviar</button>
-                `;
-            } else if (table === "consequencia") {
-                content = `
-                <h1>Zona de Perigo</h1>
-                <label for="zona_de_perigo_descricao">Descrição</label>
-                <textarea id="zona_de_perigo_descricao" maxlength="255" rows="3" cols="50"></textarea>
-                <label for="file_zona_de_perigo">Imagem</label>
-                <input type="file" id="file_zona_de_perigo">
-                <button type="submit" id="submit_edit_zona_de_perigo">Enviar</button>
-                `;
-            } else if (table === "curiosidade") {
-                content = `
-                <h1>Curiosidades</h1>
-                <label for="curiosidade_descricao">Descrição</label>
-                <textarea id="curiosidade_descricao" maxlength="255" rows="3" cols="50"></textarea>
-                <label for="file_curiosidade">Imagem</label>
-                <input type="file" id="file_curiosidade">
-                <button type="submit" id="submit_edit_curiosidade">Enviar</button>
-                `;
-            } else if (table === "quiz") {
-                content = `
-                <h1>Quizes</h1>
-                <label for="quiz_pergunta">Pergunta</label>
-                <input type="text" id="quiz_pergunta">
-                <label for="quiz_resposta">Resposta</label>
-                <input type="text" id="quiz_resposta">
-                <label for="file_quiz">Imagem</label>
-                <input type="file" id="file_quiz">
-                <button type="submit" id="submit_edit_quiz">Enviar</button>
-                `;
-            }
-
-            card.innerHTML = content;
-
-            let submitButton = document.querySelector(`#submit_edit_${table}`);
-            if (submitButton) {
-                submitButton.addEventListener('click', async () => {
-                    let formData = new FormData();
-
-                    if (table === "sorte_ou_azar" || table === "curiosidade") {
-                        let descricao = document.getElementById(`${table}_descricao`).value;
-                        let arquivo = document.getElementById(`file_${table}`).files[0];
-                        formData.append('descricao', descricao);
-                        if (arquivo) {
-                            formData.append('arquivo', arquivo);
-                        }
-                    } else if (table === "consequencia") {
-                        let descricao = document.getElementById('zona_de_perigo_descricao').value;
-                        let arquivo = document.getElementById('file_zona_de_perigo').files[0];
-                        formData.append('descricao', descricao);
-                        if (arquivo) {
-                            formData.append('arquivo', arquivo);
-                        }
-                    } else if (table === "quiz") {
-                        let pergunta = document.getElementById('quiz_pergunta').value;
-                        let resposta = document.getElementById('quiz_resposta').value;
-                        let arquivo = document.getElementById('file_quiz').files[0];
-                        formData.append('pergunta', pergunta);
-                        formData.append('resposta', resposta);
-                        if (arquivo) {
-                            formData.append('arquivo', arquivo);
-                        }
+            try {
+                let content = '';
+                if (table === "sorte_ou_azar") {
+                    // Fetch the item data
+                let response = await fetch(`http://localhost:3000/api/get_item/${table}/${itemId}`);
+                if (!response.ok) {
+                throw new Error('Erro ao buscar dados do item');
+                }
+                let itemData = await response.json();
+                    content = `
+                    <h1>Sorte ou Azar</h1>
+                    <label for="sorte_ou_azar_descricao">Descrição</label>
+                    <textarea id="sorte_ou_azar_descricao" maxlength="255" rows="3" cols="50">${itemData.descricao}</textarea>
+                    <label for="file_sorte_ou_azar">Imagem</label>
+                    <input type="file" id="file_sorte_ou_azar">
+                    <button type="submit" id="submit_edit_sorte_ou_azar">Enviar</button>
+                    `;
+                } else if (table === "consequencia") {
+                    // Fetch the item data
+                    let response = await fetch(`http://localhost:3000/api/get_item/${table}/${itemId}`);
+                    if (!response.ok) {
+                    throw new Error('Erro ao buscar dados do item');
                     }
-
-                    try {
-                        let response = await fetch(`http://localhost:3000/api/edit/${table}/${itemId}`, {
-                            method: "PUT",
-                            body: formData
-                        });
-
-                        if (response.ok) {
-                            alert("Item editado com sucesso!");
-                            // Recarrega a página atual
-                            loadOption('sorte_ou_azar');
-                        } else {
-                            let errorData = await response.json();
-                            console.error("Erro ao editar item: ", errorData);
-                        }
-                    } catch (error) {
-                        console.error("Erro ao editar o item:", error);
-                        alert("Erro ao tentar editar o item.");
+                    let itemData = await response.json();
+                    content = `
+                    <h1>Zona de Perigo</h1>
+                    <label for="zona_de_perigo_descricao">Descrição</label>
+                    <textarea id="zona_de_perigo_descricao" maxlength="255" rows="3" cols="50">${itemData.descricao}</textarea>
+                    <label for="file_zona_de_perigo">Imagem</label>
+                    <input type="file" id="file_zona_de_perigo">
+                    <button type="submit" id="submit_edit_consequencia">Enviar</button>
+                    `;
+                } else if (table === "curiosidade") {
+                    // Fetch the item data
+                    let response = await fetch(`http://localhost:3000/api/get_item/${table}/${itemId}`);
+                    if (!response.ok) {
+                    throw new Error('Erro ao buscar dados do item');
                     }
-                });
-            } else {
-                console.error(`Submit button with ID #submit_edit_${table} not found.`);
+                    let itemData = await response.json();
+                    content = `
+                    <h1>Curiosidades</h1>
+                    <label for="curiosidade_descricao">Descrição</label>
+                    <textarea id="curiosidade_descricao" maxlength="255" rows="3" cols="50">${itemData.descricao}</textarea>
+                    <label for="file_curiosidade">Imagem</label>
+                    <input type="file" id="file_curiosidade">
+                    <button type="submit" id="submit_edit_curiosidade">Enviar</button>
+                    `;
+                } else if (table === "quiz") {
+                    // Fetch the item data
+                    let response = await fetch(`http://localhost:3000/api/get_item/${table}/${itemId}`);
+                    if (!response.ok) {
+                    throw new Error('Erro ao buscar dados do item');
+                    }
+                    let itemData = await response.json();
+                    content = `
+                    <h1>Quizes</h1>
+                    <label for="quiz_pergunta">Pergunta</label>
+                    <input type="text" id="quiz_pergunta" value="${itemData.pergunta}">
+                    <label for="quiz_resposta">Resposta</label>
+                    <input type="text" id="quiz_resposta" value="${itemData.resposta}">
+                    <label for="file_quiz">Imagem</label>
+                    <input type="file" id="file_quiz">
+                    <button type="submit" id="submit_edit_quiz">Enviar</button>
+                    `;
+                }
+
+                card.innerHTML = content;
+
+                let submitButton = document.querySelector(`#submit_edit_${table}`);
+                if (submitButton) {
+                    submitButton.addEventListener('click', async () => {
+                        let formData = new FormData();
+
+                        if (table === "sorte_ou_azar" || table === "curiosidade") {
+                            let descricao = document.getElementById(`${table}_descricao`).value;
+                            let arquivo = document.getElementById(`file_${table}`).files[0];
+                            formData.append('descricao', descricao);
+                            if (arquivo) {
+                                formData.append('arquivo', arquivo);
+                            }
+                        } else if (table === "consequencia") {
+                            let descricao = document.getElementById('zona_de_perigo_descricao').value;
+                            let arquivo = document.getElementById('file_zona_de_perigo').files[0];
+                            formData.append('descricao', descricao);
+                            if (arquivo) {
+                                formData.append('arquivo', arquivo);
+                            }
+                        } else if (table === "quiz") {
+                            let pergunta = document.getElementById('quiz_pergunta').value;
+                            let resposta = document.getElementById('quiz_resposta').value;
+                            let arquivo = document.getElementById('file_quiz').files[0];
+                            formData.append('pergunta', pergunta);
+                            formData.append('resposta', resposta);
+                            if (arquivo) {
+                                formData.append('arquivo', arquivo);
+                            }
+                        }
+
+                        try {
+                            let response = await fetch(`http://localhost:3000/api/edit/${table}/${itemId}`, {
+                                method: "PUT",
+                                body: formData
+                            });
+
+                            if (response.ok) {
+                                alert("Item editado com sucesso!");
+                                // Recarrega a página atual
+                                loadOption('sorte_ou_azar');
+                            } else {
+                                let errorData = await response.json();
+                                console.error("Erro ao editar item: ", errorData);
+                            }
+                        } catch (error) {
+                            console.error("Erro ao editar o item:", error);
+                            alert("Erro ao tentar editar o item.");
+                        }
+                    });
+                } else {
+                    console.error(`Submit button with ID #submit_edit_${table} not found.`);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar dados do item:", error);
+                alert("Erro ao buscar dados do item.");
             }
         });
     });

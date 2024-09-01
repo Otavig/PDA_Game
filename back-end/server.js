@@ -26,6 +26,28 @@ const queryDatabase = async (query, params = []) => {
 };
 
 
+app.get('/api/get_item/:table/:id', async (req, res) => {
+    const { table, id } = req.params;
+
+    try {
+        const validTables = ['quiz', 'consequencia', 'curiosidade', 'sorte_ou_azar'];
+        if (!validTables.includes(table)) {
+            return res.status(400).json({ error: 'Tabela inválida' });
+        }
+
+        const results = await queryDatabase(`SELECT * FROM ${table} WHERE id = ?`, [id]);
+
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).json({ error: 'Item não encontrado' });
+        }
+    } catch (error) {
+        console.error("Erro ao buscar item:", error);
+        res.status(500).json({ error: "Erro interno do servidor. Por favor, tente novamente mais tarde." });
+    }
+});
+
 // Função para excluir um arquivo
 const excluirArquivo = (caminho) => {
     return new Promise((resolve, reject) => {
